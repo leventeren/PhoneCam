@@ -1,0 +1,14 @@
+{
+  "name": "phonecam",
+  "version": "1.0.0",
+  "description": "Local WiFi camera streaming application using WebRTC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "selfsigned": "^2.4.1",
+    "socket.io": "^4.7.5"
+  }
+}

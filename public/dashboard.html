@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İzleme Paneli - PhoneCam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="background-decor">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+
+  <div class="container dashboard-layout">
+    <header class="dashboard-header">
+      <div class="dashboard-title">
+        <a href="index.html" class="back-btn" style="margin-bottom: 0; padding: 6px 12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </a>
+        <h2>Kontrol <span>Paneli</span></h2>
+      </div>
+
+      <div class="stats-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        <span>Bağlı Kamera: <strong id="camera-count">0</strong></span>
+      </div>
+    </header>
+
+    <!-- Kameralar Izgarası (Grid) -->
+    <main id="camera-grid" class="camera-grid">
+      <!-- Boş Durum Şablonu (Kamera yokken gösterilir) -->
+      <div id="empty-state" class="empty-state glass-card">
+        <svg class="empty-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        <h3>Henüz Bağlı Kamera Yok</h3>
+        <p>Telefonlarınızdan yayını başlatarak bu ekranda görüntüleyebilirsiniz.</p>
+        <div class="connection-info-box">
+          Telefonunuzun tarayıcısından şu adresi açın:<br>
+          <code id="camera-url-display">https://[IP-ADRESI]:3000/camera.html</code>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bağımlılıklar -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

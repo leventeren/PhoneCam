@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhoneCam - Yerel Kamera İzleme</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="background-decor">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+
+  <div class="container main-menu">
+    <header class="header">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        <h1>Phone<span>Cam</span></h1>
+      </div>
+      <p class="subtitle">WiFi üzerinden telefonunuzu kablosuz güvenlik kamerasına dönüştürün</p>
+    </header>
+
+    <main class="menu-grid">
+      <!-- Dashboard Card -->
+      <a href="dashboard.html" class="menu-card glass-card card-dashboard">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>İzleme Paneli (Dashboard)</h3>
+          <p>Tüm bağlı telefon kameralarını tek bir ekranda eşzamanlı olarak izleyin. Genellikle bilgisayarlar için uygundur.</p>
+          <span class="card-action">Panele Git &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Camera Card -->
+      <a href="camera.html" class="menu-card glass-card card-camera">
+        <div class="card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>Kamera Modu (Yayıncı)</h3>
+          <p>Bu telefonun kamerasını yayına açarak sisteme görüntü gönderin. Mobil cihazlar için uygundur.</p>
+          <span class="card-action">Yayın Başlat &rarr;</span>
+        </div>
+      </a>
+    </main>
+
+    <footer class="footer-info glass-card">
+      <div class="info-header">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="info-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <h4>Nasıl Kullanılır?</h4>
+      </div>
+      <ol class="info-list">
+        <li>Tüm cihazlarınızın (bilgisayar ve telefonlar) <strong>aynı Wi-Fi ağına</strong> bağlı olduğundan emin olun.</li>
+        <li>Bu bilgisayarda <strong>İzleme Paneli</strong>'ni açın.</li>
+        <li>Telefonlarınızdan aşağıdaki adreslerden birine bağlanarak kameranızı açın:
+          <div id="local-ips-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; font-family: monospace;">
+            Yükleniyor...
+          </div>
+        </li>
+        <li>Güvenlik uyarısını geçip <strong>Kamera İzni</strong> verin ve yayını başlatın.</li>
+      </ol>
+    </footer>
+  </div>
+
+  <script>
+    fetch('/api/info')
+      .then(res => res.json())
+      .then(data => {
+        const listDiv = document.getElementById('local-ips-list');
+        listDiv.innerHTML = '';
+        if (!data.ips || data.ips.length === 0) {
+          listDiv.innerHTML = '<div style="color: var(--danger);">Yerel ağ adresi bulunamadı. Lütfen Wi-Fi bağlantınızı kontrol edin.</div>';
+          return;
+        }
+        data.ips.forEach(ip => {
+          const url = `https://${ip}:${data.port}/camera.html`;
+          listDiv.innerHTML += `<a href="${url}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 600; display: block; word-break: break-all;">${url}</a>`;
+        });
+      })
+      .catch(err => {
+        console.error('IP bilgileri alınamadı:', err);
+        const listDiv = document.getElementById('local-ips-list');
+        const fallbackUrl = `${window.location.origin}/camera.html`;
+        listDiv.innerHTML = `<a href="${fallbackUrl}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 600; display: block; word-break: break-all;">${fallbackUrl}</a>`;
+      });
+  </script>
+</body>
+</html>
